@@ -1,3 +1,7 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Login from '../login'
+
 // Basic unit test
 test('calls onSubmit with the username and password when submitted', () => {
   // Arrange
@@ -17,6 +21,22 @@ test('calls onSubmit with the username and password when submitted', () => {
   //
   // Assert
   // ensure your submit handler was called properly
+
+  const container = document.createElement('div')
+  const onSubmitMock = jest.fn()
+  ReactDOM.render(<Login onSubmit={onSubmitMock} />, container)
+  const formEl = container.querySelector('form')
+  const {username, password} = formEl.elements
+
+  username.value = 'fakeUsername'
+  password.value = 'fakePassword'
+  formEl.dispatchEvent(new Event('submit'))
+
+  expect(onSubmitMock).toHaveBeenCalledTimes(1)
+  expect(onSubmitMock).toHaveBeenCalledWith({
+    username: 'fakeUsername',
+    password: 'fakePassword',
+  })
 })
 
 //////// Elaboration & Feedback /////////
@@ -28,8 +48,8 @@ test('calls onSubmit with the username and password when submitted', () => {
 /*
 http://ws.kcd.im/?ws=Testing&e=login.step-1&em=
 */
-test.skip('I submitted my elaboration and feedback', () => {
-  const submitted = false // change this when you've submitted!
+test('I submitted my elaboration and feedback', () => {
+  const submitted = true // change this when you've submitted!
   expect(submitted).toBe(true)
 })
 ////////////////////////////////
