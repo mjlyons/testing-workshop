@@ -33,6 +33,7 @@ function Login({onSubmit}) {
           name="password"
           aria-labelledby="password-input"
         />
+        <button type="submit">Login</button>
       </Form>
     </div>
   )
