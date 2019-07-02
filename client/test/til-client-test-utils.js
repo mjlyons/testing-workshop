@@ -11,8 +11,7 @@ function renderWithRouter(ui, {route = '/', ...renderOptions} = {}) {
     <Router history={history}>{ui}</Router>,
     renderOptions,
   )
-  const finishLoading = () =>
-    wait(() => expect(utils.queryByText('Loading')).toBeNull())
+  const finishLoading = () => wait(() => !utils.queryByText('Loading'))
   return {
     ...utils,
     finishLoading,

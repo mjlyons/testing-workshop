@@ -18,7 +18,6 @@ beforeEach(() => {
 test('login as an existing user', async () => {
   // render the app with the router provider and custom history
   const {
-    container,
     getByLabelText,
     getByTestId,
     getByText,
@@ -31,7 +30,7 @@ test('login as an existing user', async () => {
 
   //
   // navigate to login by clicking login-link
-  Simulate.click(getByText('Login'), {button: 0})
+  getByText('Login').click()
   expect(window.location.href).toContain('/login')
 
   //
@@ -52,9 +51,7 @@ test('login as an existing user', async () => {
   post.mockImplementation(async () => ({
     data: {user: {...fakeUser, token}},
   }))
-  //Simulate.submit(container.querySelector('form'))
-  const form = container.querySelector('form')
-  Simulate.submit(form)
+  getByText('Submit').click()
 
   //
   // wait for the mocked requests to finish
