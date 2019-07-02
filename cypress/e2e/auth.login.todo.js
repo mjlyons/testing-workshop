@@ -48,10 +48,6 @@ describe('authentication', () => {
       // and verify that the display name contains user.username
       .getByTestId('username-display')
       .should('contain', user.username)
-
-      // Mike: verify content loads
-      .getByTestId('post-title')
-      .should('be.visible')
   })
 
   //////// Elaboration & Feedback /////////
