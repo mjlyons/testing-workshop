@@ -6,7 +6,14 @@
 import {generate} from '../utils'
 
 describe('authentication', () => {
-  beforeEach(() => cy.logout())
+  let user = null
+
+  beforeEach(() => {
+    cy.logout()
+      .createNewUser()
+      .then(u => (user = u))
+      .visit('/')
+  })
 
   it('should allow existing users to login', () => {
     // you'll want to first create a new user.
@@ -14,40 +21,37 @@ describe('authentication', () => {
     // cy.createNewUser().then(user => {
     //   more cy commands here
     // })
-    cy.createNewUser().then(user => {
+    //
+    // With the user created, go ahead and use the cy commands to:
+    // 1. visit the app: visitApp
+
+    // 2. Click the login link
+    cy.getByText('Login')
+      .click()
+
+      // 3. type the user's username in the username field
+      .getByLabelText('Username')
+      .type(user.username)
+
+      // 4. type the user's password in the password field
+      .getByLabelText('Password')
+      .type(user.password)
+
+      // 5. submit the form by clicking the submit button
+      .getByText('Submit')
+      .click()
+
       //
-      // With the user created, go ahead and use the cy commands to:
-      // 1. visit the app: visitApp
-      cy.visit('/')
+      // Finally assert the route changed to '/'
+      .assertRoute('/')
 
-        // 2. Click the login link
-        .getByText('Login')
-        .click()
+      // and verify that the display name contains user.username
+      .getByTestId('username-display')
+      .should('contain', user.username)
 
-        // 3. type the user's username in the username field
-        .getByLabelText('Username')
-        .type(user.username)
-
-        // 4. type the user's password in the password field
-        .getByLabelText('Password')
-        .type(user.password)
-
-        // 5. submit the form by clicking the submit button
-        .getByText('Submit')
-        .click()
-
-        //
-        // Finally assert the route changed to '/'
-        .assertRoute('/')
-
-        // and verify that the display name contains user.username
-        .getByTestId('username-display')
-        .should('contain', user.username)
-
-        // Mike: verify content loads
-        .getByTestId('post-title')
-        .should('be.visible')
-    })
+      // Mike: verify content loads
+      .getByTestId('post-title')
+      .should('be.visible')
   })
 
   //////// Elaboration & Feedback /////////
