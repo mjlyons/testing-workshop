@@ -15,18 +15,19 @@ Then run this code with `node 2.todo`
 
  */
 
+function expect(actualVal) {
+  return {
+    toBe(expectedVal) {
+      if (actualVal !== expectedVal) {
+        throw new Error(`${actualVal} is not equal to ${expectedVal}`)
+      }
+    },
+  }
+}
+
 const {sum, subtract} = require('./math')
 
 let result, expected
 
-result = sum(3, 7)
-expected = 10
-if (result !== expected) {
-  throw new Error(`${result} is not equal to ${expected}`)
-}
-
-result = subtract(7, 3)
-expected = 4
-if (result !== expected) {
-  throw new Error(`${result} is not equal to ${expected}`)
-}
+expect(sum(3, 7)).toBe(10)
+expect(subtract(7, 3)).toBe(4)
