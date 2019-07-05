@@ -7,16 +7,27 @@ test('returns winner', () => {
   // change the getWinner implementation to a function
   // that keeps track of how often it's called and
   // the arguments it's called with (Hint #1)
-  utils.getWinner = (p1, p2) => p2
+  const mockGetWinner = (...args) => {
+    mockGetWinner.calls.push(args)
+    const p2 = args[1]
+    return p2
+  }
+  mockGetWinner.calls = []
+  utils.getWinner = mockGetWinner
 
   const winner = thumbWar('Ken Wheeler', 'Kent C. Dodds')
   expect(winner).toBe('Kent C. Dodds')
   // add an assertion for how many times the getWinner function
   // was supposed to be called (2 times) (Hint #2)
+  expect(mockGetWinner.calls.length).toBe(2)
+
   //
   // add another assertion that every time it was called
   // it was called with the right arguments: 'Ken Wheeler', 'Kent C. Dodds'
   // (Hint #3)
+  mockGetWinner.calls.forEach(call => {
+    expect(call).toEqual(['Ken Wheeler', 'Kent C. Dodds'])
+  })
 
   utils.getWinner = originalGetWinner
 })
